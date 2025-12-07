@@ -1,0 +1,46 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e2ecff;
+  padding: 20px;
+}
+
+.container {
+  text-align: center;
+}
+
+.title {
+  font-size: 4.0rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 5rem;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 15px 20px;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 2px solid #fecaca;
+}
+
+.instructions {
+  margin-top: 1.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.instructions p {
+  margin: 0;
+}
+
+.grid {
+  display: inline-block;
+  width: 500px;
+  height: 500px;
+  padding: 10px;
+}
