@@ -7,6 +7,7 @@ import { createEmptyGrid, cloneGrid, isGridComplete } from './utils/gridHelpers'
 import { isValidGrid } from './utils/validator';
 import './App.css';
 import { solveSudoku } from './utils/sudokuSolver';
+import { SudokuUpload } from './components/SudokuUpload';
 
 function App() {
   const [grid, setGrid] = useState<Grid>(createEmptyGrid());
@@ -123,6 +124,8 @@ function App() {
       <div style={{ textAlign: 'center' }}>
         <h1 className="title">Sudoku Solver</h1>
         
+
+
         <SudokuGrid
           grid={grid}
           givenGrid={givenGrid}
@@ -152,11 +155,11 @@ function App() {
           isScanningEnabled={isScanningEnabled}
         />
         
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+         return (
+            <div>
+              <SudokuUpload />
+            </div>
+          );
         
         <div className="instructions">
           <p>Enter numbers 1-9 in the grid, then click Solve!</p>
