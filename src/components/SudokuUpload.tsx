@@ -20,7 +20,6 @@ export function SudokuUpload() {
 
       const data = await res.json();
 
-      // 🔥 Log message from backend
       console.log(data.message);
     } catch (err) {
       console.error("Request failed:", err);
