@@ -93,13 +93,71 @@ export function hasUniqueSolution(grid: Grid): boolean {
   return solutionCount === 1;
 }
 
-function scanning(sudoko) {
-var loopCounter: number;
-loopCounter=0;
-var pencils: number[][][];
-pencils=makePencilGrid();
+function SolveSudoku(Sudoku:number[][]) {
+  var loopCounter: number;
+  loopCounter=0;
 
+  var pencils: number[][][];
+  //makes pencil grid full of 1's 
+  pencils=makePencilGrid();
 
+  var num: number;
+  var i: number;
+  var j: number;
+  var ActiveNumber: number;
+
+  var solved: boolean;
+  solved=false;
+  while(solved==false && loopCounter<100) { 
+    for(num=0;num<9;num++)
+    {
+      for(i=0;i<9;i++)
+      {
+        for(j=0;j<9;j++)
+        {
+          ActiveNumber=Sudoku[i][j];
+          if(ActiveNumber!=0)
+          {
+            // If alone in the row/column
+            ///or alone in box 
+            //then place
+            checkAloneRowColumn(pencils, i, j, num);            
+            checkaloneBox(pencils, i, j, num);  
+
+            //need to fix both of these
+
+            //remove 1's if number present in row of column
+            //rename??
+            checkRowColumn(Sudoku, i, j, ActiveNumber)
+
+            //remove 1's if number present in box
+            //rename??
+            checkBox(Sudoku, i, j, ActiveNumber)
+          }
+        }
+      }
+    }
+    loopCounter++;
+    solved=checksolved(Sudoku);
+  }
+}
+
+export function checksolved(sudoku:number[][]) {
+
+  var i: number;
+  var j: number;
+
+  for (i = 0; i < 9; i++) 
+  {
+    for (j = 0; j < 9; j++) 
+    {
+      if(sudoku[i][j]==0)
+      {
+        return false
+      }
+    }
+  }
+  return true
 }
 
 export function makePencilGrid() {
@@ -156,7 +214,9 @@ for (k = 0; k < 2; k++) {
  return true; //can be placed
 }
 
+//
 export function checkBox(sudoko:number[][], i : number, j:number, num:number){
+//check box and remove pencils for that box if present 
 var a: number;
 var b: number;
 
@@ -164,6 +224,8 @@ var m: number;
 var n: number;
 
 var boxValue: number;
+var counter: number;
+counter=0;
 
 var modRow: number;
 var modColumn: number;
@@ -182,12 +244,19 @@ for (m = 0; m < 3; m++) {
   for (n = 0; n < 3; n++) {
     boxValue=sudoko[a+m][b+n];
     if(boxValue==num){
-      return false;
+      //return false;
+      counter++;
     }
   }
 }
-
-return true;
+if(counter>1)
+{
+  return false
+}
+else
+{
+  return true;
+}
 }
 
 export function checkAloneRowColumn(pencils:number[][][], i : number, j:number, num:number){
@@ -305,3 +374,42 @@ export function Solved(Sudoku:number[][]){
   }
   return true
 }
+
+export function checkaloneBox(pencils:number[][][], i : number, j:number, num:number){
+
+
+    var a: number;
+    var b: number;
+
+    var m: number;
+    var n: number;
+
+    var modRow: number;
+    var modColumn: number;
+
+    var NumberInstanceCounter:number;
+
+    NumberInstanceCounter=0;
+
+    modRow= i % 3 ;
+    modColumn= j % 3 ;
+
+    a=i-modRow;
+    b=j-modColumn;
+
+    for (m = 0; m < 3; m++) {
+      for (n = 0; n < 3; n++) {
+        if (sudoku[a+m][b+n]==num)
+          {
+            NumberInstanceCounter++;
+          };
+      }
+    }
+    if (NumberInstanceCounter>1)
+    {
+        return false
+    }
+    else{
+      return true
+    }
+};
