@@ -105,6 +105,7 @@ function SolveSudoku(Sudoku:number[][]) {
   var i: number;
   var j: number;
   var ActiveNumber: number;
+  var Alone: boolean;
 
   var solved: boolean;
   solved=false;
@@ -118,13 +119,13 @@ function SolveSudoku(Sudoku:number[][]) {
           ActiveNumber=Sudoku[i][j];
           if(ActiveNumber!=0)
           {
-            // If alone in the row/column
-            ///or alone in box 
-            //then place
-            checkAloneRowColumn(pencils, i, j, num);            
-            checkaloneBox(pencils, i, j, num);  
-
-            //need to fix both of these
+            // If alone in the row/columnor/box 
+            //if true then place
+            Alone=checkAloneRowColumnBox(pencils, i, j, num);            
+            if (Alone==true)
+            {
+              Sudoku[i][j]=num;
+            }
 
             //remove 1's if number present in row of column
             //rename??
@@ -138,27 +139,10 @@ function SolveSudoku(Sudoku:number[][]) {
       }
     }
     loopCounter++;
-    solved=checksolved(Sudoku);
+    solved=Solved(Sudoku);
   }
 }
 
-export function checksolved(sudoku:number[][]) {
-
-  var i: number;
-  var j: number;
-
-  for (i = 0; i < 9; i++) 
-  {
-    for (j = 0; j < 9; j++) 
-    {
-      if(sudoku[i][j]==0)
-      {
-        return false
-      }
-    }
-  }
-  return true
-}
 
 export function makePencilGrid() {
 
@@ -259,7 +243,7 @@ else
 }
 }
 
-export function checkAloneRowColumn(pencils:number[][][], i : number, j:number, num:number){
+export function checkAloneRowColumnBox(pencils:number[][][], i : number, j:number, num:number){
 var valuebox: number;
 var countInstanceRow: number;
 var countInstanceColumn: number;
@@ -375,41 +359,3 @@ export function Solved(Sudoku:number[][]){
   return true
 }
 
-export function checkaloneBox(pencils:number[][][], i : number, j:number, num:number){
-
-
-    var a: number;
-    var b: number;
-
-    var m: number;
-    var n: number;
-
-    var modRow: number;
-    var modColumn: number;
-
-    var NumberInstanceCounter:number;
-
-    NumberInstanceCounter=0;
-
-    modRow= i % 3 ;
-    modColumn= j % 3 ;
-
-    a=i-modRow;
-    b=j-modColumn;
-
-    for (m = 0; m < 3; m++) {
-      for (n = 0; n < 3; n++) {
-        if (sudoku[a+m][b+n]==num)
-          {
-            NumberInstanceCounter++;
-          };
-      }
-    }
-    if (NumberInstanceCounter>1)
-    {
-        return false
-    }
-    else{
-      return true
-    }
-};
