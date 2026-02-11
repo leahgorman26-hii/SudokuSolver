@@ -110,11 +110,11 @@ function SolveSudoku(Sudoku:number[][]) {
   var solved: boolean;
   solved=false;
   while(solved==false && loopCounter<100) { 
-    for(num=0;num<9;num++)
+    for(i=0;i<9;i++)
     {
-      for(i=0;i<9;i++)
+      for(j=0;j<9;j++)
       {
-        for(j=0;j<9;j++)
+        for(num=0;num<9;num++)
         {
           ActiveNumber=Sudoku[i][j];
           if(ActiveNumber!=0)
@@ -129,13 +129,14 @@ function SolveSudoku(Sudoku:number[][]) {
 
             //remove 1's if number present in row of column
             //rename??
-            checkRowColumn(Sudoku, i, j, ActiveNumber)
 
             //remove 1's if number present in box
             //rename??
-            checkBox(Sudoku, i, j, ActiveNumber)
+            checkBox(Sudoku, pencils,i, j, ActiveNumber)
           }
         }
+        //check row column
+        checkRowColumn(Sudoku, pencils, i, j)
       }
     }
     loopCounter++;
@@ -172,34 +173,35 @@ export function makePencilGrid() {
   //console.log("HIIII:");
 }
 
-export function checkRowColumn(sudoku: number[][], i: number, j: number, num: number) {
-// need to pass in i, j and sudoku
+export function checkRowColumn(sudoku: number[][], pencils: number[][][], i: number, j: number) {
+
 var boxValue: number;
 var k: number;
 var l: number;
+var num:number;
 
-for (k = 0; k < 2; k++) {
-  for (l = 0; l < 9; l++) {
-    if(k==0)
-    {
-      boxValue= sudoku[i][l];
-      if(boxValue==num){
-        return false; //don't place 
+
+if (sudoku[i][j]!=0){
+  boxValue = sudoku[i][j] - 1;
+  for (k = 0; k < 2; k++) {
+    for (l = 0; l < 9; l++) {
+      //check row
+      if(k==0)
+      {
+        pencils[boxValue][i][l]=0;
+      }
+      //check column
+      if(k==1){
+        pencils[boxValue][l][j]=0;
+      }   
       }
     }
-    if(k==1){
-      boxValue=sudoku[l][j];
-      if(boxValue==num){
-         return false; //don't place
-      }
-    }   
   }
-}
- return true; //can be placed
+  return(pencils);
 }
 
 //
-export function checkBox(sudoko:number[][], i : number, j:number, num:number){
+export function checkBox(sudoko:number[][], pencils: number[][][], i : number, j:number, num:number){
 //check box and remove pencils for that box if present 
 var a: number;
 var b: number;
